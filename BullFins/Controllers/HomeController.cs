@@ -75,11 +75,11 @@ namespace BullFins.Controllers
             Calls the IEX reference API to get the stock stats.
             Returns a stock stats whose information is available. 
         */
-        public List<Company> GetStockStats()
+        public StockStats GetStockStats()
         {
             string IEXTrading_API_PATH = BASE_URL + "stock/aapl/stats";
-            string stockStats = "";
-            List<Company> companies = null;
+            string res_stockStats = "";
+            StockStats stockStats = null;
 
             // connect to the IEXTrading API and retrieve information
             httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
@@ -88,18 +88,17 @@ namespace BullFins.Controllers
             // read the Json objects in the API response
             if (response.IsSuccessStatusCode)
             {
-                stockStats = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                res_stockStats = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                Console.WriteLine(res_stockStats);
             }
 
             // now, parse the Json strings as C# objects
-            if (!stockStats.Equals(""))
+            if (!res_stockStats.Equals(""))
             {
-                // https://stackoverflow.com/a/46280739
-                companies = JsonConvert.DeserializeObject<List<Company>>(stockStats);
-                companies = companies.GetRange(0, 50);
+                stockStats = JsonConvert.DeserializeObject<StockStats>(res_stockStats);
             }
 
-            return companies;
+            return stockStats;
         }
 
 
@@ -136,12 +135,12 @@ namespace BullFins.Controllers
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessComp = 0;
-            List<Company> companies = GetStockStats();
+            StockStats stockstats = GetStockStats();
 
             //Save companies in TempData, so they do not have to be retrieved again
-            TempData["Companies"] = JsonConvert.SerializeObject(companies);
+            //TempData["Companies"] = JsonConvert.SerializeObject(stockstats);
 
-            return View(companies);
+            return View(new List<StockStats> {stockstats});
         }
 
         /*

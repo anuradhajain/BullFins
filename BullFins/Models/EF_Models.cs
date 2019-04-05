@@ -19,11 +19,11 @@ namespace BullFins.Models
             public string iexId { get; set; }
         }
 
-        public class KeyStats
+        public class StockStats
         {
             [Key]
             public string symbol { get; set; }
-            public decimal NamedividendRate { get; set; }
+            public decimal dividendRate { get; set; }
             public decimal revenue { get; set; }
             public decimal grossProfit { get; set; }
             public decimal cash { get; set; }

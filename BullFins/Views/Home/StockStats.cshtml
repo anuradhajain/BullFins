@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Stock Stats";
+}
+
+@model IEnumerable<BullFins.Models.EF_Models.StockStats>
+
+<p>Stock Stats.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Symbol
+            </th>
+            <th>
+                dividendRate
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.symbol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dividendRate)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
