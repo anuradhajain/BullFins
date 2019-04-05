@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model IEnumerable<BullFins.Models.EF_Models.Company>
+
+<h2>Symbols</h2>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Symbol
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Type
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.symbol)
+                </td>
+                <td>
+                    <a id="dbopt" asp-controller="Home" asp-action="StockStats">@Html.DisplayFor(modelItem => item.name)</a>
+                    
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.type)
+                </td>
+            </tr>
+        }
+
+        @{
+            Model.Count();
+        }
+    </tbody>
+</table>
+<tr>
+    <td>
+        <a id="dbopt" asp-controller="Home" asp-action="PopulateSymbols"><img src="~/img/button_save-data.png" /></a>
+    </td>
+</tr>

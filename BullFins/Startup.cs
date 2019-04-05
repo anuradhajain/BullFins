@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+// ADD THESE DIRECTIVES
+using Microsoft.EntityFrameworkCore;
+// This directive comes from the DataAccess directory
+// that stores the Context or the database
+using BullFins.DataAccess;
 
 namespace BullFins
 {
@@ -32,6 +37,9 @@ namespace BullFins
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            // Setup EF connection - modify the Conguration string
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:BullFins_DB:ConnectionString"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
