@@ -31,7 +31,21 @@ namespace BullFins.Models
             public decimal revenuePerShare { get; set; }
 
         }
+        
+        public class Chart
+        {
+            [Key]
+            public string symbol { get; set; }
+            public string date { get; set; }
+            public decimal volume { get; set; }
+            public decimal open { get; set; }
+            public decimal high { get; set; }
+            public decimal low { get; set; }
+            public decimal close { get; set; }
+            public decimal change { get; set; }
 
+        }
+        
         public class ErrorViewModel
         {
             public string RequestId { get; set; }

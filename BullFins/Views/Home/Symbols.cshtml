@@ -5,7 +5,6 @@
 @model IEnumerable<BullFins.Models.EF_Models.Company>
 
 <h2>Symbols</h2>
-<hr />
 
 <table class="table">
     <thead>
@@ -34,7 +33,7 @@
                     @Html.DisplayFor(modelItem => item.symbol)
                 </td>
                 <td>
-                    <a id="dbopt" asp-controller="Home" asp-action="StockStats">@Html.DisplayFor(modelItem => item.name)</a>
+                    <a id="dbopt" asp-controller="Home" asp-action="ChartData">@Html.DisplayFor(modelItem => item.name)</a>
 
                 </td>
                 <td>

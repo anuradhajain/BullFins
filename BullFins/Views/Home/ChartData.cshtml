@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Chart Data";
+}
+
+@model IEnumerable<BullFins.Models.EF_Models.Chart>
+
+<h2>Chart Data</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Date
+            </th>
+            <th>
+                Volume
+            </th>
+            <th>
+                Open
+            </th>
+            <th>
+                High
+            </th>
+            <th>
+                Low
+            </th>
+            <th>
+                Close
+            </th>
+            <th>
+                Change
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.volume)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.open)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.high)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.low)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.close)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.change)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -13,7 +13,22 @@
                 Symbol
             </th>
             <th>
-                dividendRate
+                Dividend Rate
+            </th>
+            <th>
+                Revenue
+            </th>
+            <th>
+                Gross Profit
+            </th>
+            <th>
+                Cash
+            </th>
+            <th>
+                Debt
+            </th>
+            <th>
+                Revenue Per Share
             </th>
         </tr>
     </thead>
@@ -26,6 +41,21 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.dividendRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.revenue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.grossProfit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cash)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.debt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.revenuePerShare)
             </td>
         </tr>
         }

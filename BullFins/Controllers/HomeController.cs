@@ -78,7 +78,7 @@ namespace BullFins.Controllers
         public StockStats GetStockStats()
         {
             string IEXTrading_API_PATH = BASE_URL + "stock/aapl/stats";
-            string res_stockStats = "";
+            string responseStockStats = "";
             StockStats stockStats = null;
 
             // connect to the IEXTrading API and retrieve information
@@ -88,17 +88,44 @@ namespace BullFins.Controllers
             // read the Json objects in the API response
             if (response.IsSuccessStatusCode)
             {
-                res_stockStats = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                Console.WriteLine(res_stockStats);
+                responseStockStats = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                Console.WriteLine(responseStockStats);
             }
 
             // now, parse the Json strings as C# objects
-            if (!res_stockStats.Equals(""))
+            if (!responseStockStats.Equals(""))
             {
-                stockStats = JsonConvert.DeserializeObject<StockStats>(res_stockStats);
+                stockStats = JsonConvert.DeserializeObject<StockStats>(responseStockStats);
             }
 
             return stockStats;
+        }
+
+        // Calling the charts API
+        public List<Chart> GetChartData()
+        {
+            string IEXTrading_API_PATH = BASE_URL + "/stock/aapl/chart/ytd";
+            string responseChartData = "";
+            List<Chart> chartData = null;
+
+            // connect to the IEXTrading API and retrieve information
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+
+            // read the Json objects in the API response
+            if (response.IsSuccessStatusCode)
+            {
+                responseChartData = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                Console.WriteLine(responseChartData);
+            }
+
+            // now, parse the Json strings as C# objects
+            if (!responseChartData.Equals(""))
+            {
+                chartData = JsonConvert.DeserializeObject<List<Chart>>(responseChartData);
+            }
+
+            return chartData;
         }
 
 
@@ -137,10 +164,16 @@ namespace BullFins.Controllers
             ViewBag.dbSuccessComp = 0;
             StockStats stockstats = GetStockStats();
 
-            //Save companies in TempData, so they do not have to be retrieved again
-            //TempData["Companies"] = JsonConvert.SerializeObject(stockstats);
+            return View(new List<StockStats>{stockstats});
+        }
 
-            return View(new List<StockStats> {stockstats});
+        public IActionResult ChartData()
+        {
+            //Set ViewBag variable first
+            ViewBag.dbSuccessComp = 0;
+            List<Chart> chartData = GetChartData();
+
+            return View(chartData);
         }
 
         /*
