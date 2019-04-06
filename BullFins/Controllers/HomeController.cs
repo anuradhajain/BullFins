@@ -75,9 +75,9 @@ namespace BullFins.Controllers
             Calls the IEX reference API to get the stock stats.
             Returns a stock stats whose information is available. 
         */
-        public StockStats GetStockStats()
+        public StockStats GetStockStats(String symbol)
         {
-            string IEXTrading_API_PATH = BASE_URL + "stock/aapl/stats";
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/stats";
             string responseStockStats = "";
             StockStats stockStats = null;
 
@@ -102,9 +102,9 @@ namespace BullFins.Controllers
         }
 
         // Calling the charts API
-        public List<Chart> GetChartData()
+        public List<Chart> GetChartData(String symbol)
         {
-            string IEXTrading_API_PATH = BASE_URL + "/stock/aapl/chart/ytd";
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/chart/ytd";
             string responseChartData = "";
             List<Chart> chartData = null;
 
@@ -158,20 +158,20 @@ namespace BullFins.Controllers
             return View(companies);
         }
 
-        public IActionResult StockStats()
+        public IActionResult StockStats(String symbol)
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessComp = 0;
-            StockStats stockstats = GetStockStats();
+            StockStats stockstats = GetStockStats(symbol);
 
             return View(new List<StockStats>{stockstats});
         }
 
-        public IActionResult ChartData()
+        public IActionResult ChartData(String symbol)
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessComp = 0;
-            List<Chart> chartData = GetChartData();
+            List<Chart> chartData = GetChartData(symbol);
 
             return View(chartData);
         }
