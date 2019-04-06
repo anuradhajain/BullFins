@@ -128,6 +128,37 @@ namespace BullFins.Controllers
             return chartData;
         }
 
+        /*
+           Calls the IEX reference API to get the financials stats.
+           Returns a stock stats whose information is available. 
+       */
+        public Financials GetFinancials(String symbol)
+        {
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "financials";
+            string responseFinancials = "";
+            Financials financials = null;
+
+            // connect to the IEXTrading API and retrieve information
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+
+            // read the Json objects in the API response
+            if (response.IsSuccessStatusCode)
+            {
+                responseFinancials = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                Console.WriteLine(responseFinancials);
+            }
+
+            // now, parse the Json strings as C# objects
+            if (!responseFinancials.Equals(""))
+            {
+                financials = JsonConvert.DeserializeObject<Financials>(responseFinancials);
+            }
+
+            return financials;
+        }
+
+
 
         public IActionResult Index()
         {

@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,7 +45,21 @@ namespace BullFins.Models
             public decimal change { get; set; }
 
         }
-        
+
+        public class Financials
+        {
+            [Key]
+            public string reportdate { get; set; }
+            public decimal grossprofit { get; set; }
+            public decimal totalrevenue { get; set; }
+            public decimal totalassets { get; set; }
+            public decimal totalliabilities { get; set; }
+            public decimal totalcash { get; set; }
+            public decimal totaldebt { get; set; }
+            public decimal cashflow { get; set; }
+            
+        }
+
         public class ErrorViewModel
         {
             public string RequestId { get; set; }
