@@ -14,7 +14,6 @@ namespace BullFins.DataAccess
 
         public DbSet<Company> Companies { get; set; }
         public DbSet<StockStats> StockStatistics { get; set; }
-        public DbSet<Chart> Charts { get; set; }
         public DbSet<SymbolFinancial> SymbolFinancials { get; set; }
     }
 }

@@ -203,10 +203,6 @@ namespace BullFins.Controllers
             PopulateStockStats(stockstats);
 
             List<Chart> chartData = GetChartData(symbol);
-            /*foreach (Chart chart in chartData) {
-                chart.symbol = symbol;
-            }*/
-            PopulateSymbolChart(chartData);
 
             var ci = System.Globalization.CultureInfo.GetCultureInfo("en-us");
             List<DataPoint> dataPoints = new List<DataPoint>();
@@ -261,7 +257,7 @@ namespace BullFins.Controllers
         }
 
         /*
-            Save the symboll statistic in the database
+            Save the symbol statistic in the database
         */
         public void PopulateStockStats(StockStats stock)
         {
@@ -275,24 +271,7 @@ namespace BullFins.Controllers
         }
 
         /*
-            Save the symboll chart data in the database
-        */
-        public void PopulateSymbolChart(List<Chart> chartData)
-        {
-            foreach (Chart chart in chartData)
-            {
-                //Database will give PK constraint violation error when trying to insert record with existing PK.
-                //So add company only if it doesnt exist, check existence using symbol (PK)
-                if (dbContext.Charts.Where(c => c.symbol.Equals(chart.symbol)).Count() == 0)
-                {
-                    dbContext.Charts.Add(chart);
-                }
-            }
-            dbContext.SaveChanges();
-        }
-
-        /*
-            Save the symboll chart data in the database
+            Save the Symboll financial data in the database
         */
         public void PopulateSymbolFinancialData(SymbolFinancial symbolFinancial)
         {
