@@ -132,11 +132,11 @@ namespace BullFins.Controllers
            Calls the IEX reference API to get the financials stats.
            Returns Financials of the companies whose information is available. 
        */
-        public Financials GetFinancials(String symbol)
+        public SymbolFinancial GetFinancials(String symbol)
         {
             string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/financials";
             string responseFinancials = "";
-            Financials financials = null;
+            SymbolFinancial symbolFinancial = null;
 
             // connect to the IEXTrading Financial API and retrieve information
             httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
@@ -153,10 +153,15 @@ namespace BullFins.Controllers
             if (!responseFinancials.Equals(""))
             {
                 //chartData = JsonConvert.DeserializeObject<List<Chart>>(responseChartData);
-                financials = JsonConvert.DeserializeObject<Financials>(responseFinancials);
+                try
+                {
+                    symbolFinancial = JsonConvert.DeserializeObject<SymbolFinancial>(responseFinancials);
+                } catch(Exception ex) {
+                    symbolFinancial = new SymbolFinancial();
+                }
             }
 
-            return (financials);      
+            return (symbolFinancial);      
         }
 
 
@@ -214,12 +219,12 @@ namespace BullFins.Controllers
 
             //Set ViewBag variable first
             ViewBag.dbSuccessComp = 0;
-            Financials financials = GetFinancials(symbol);
+            SymbolFinancial financials = GetFinancials(symbol);
 
             //Save Financial in TempData, so they do not have to be retrieved again
-            TempData["financials"] = JsonConvert.SerializeObject(financials);
-
-            return View(financials);
+            //TempData["financials"] = JsonConvert.SerializeObject(financials);
+            List<Financials> financialList = financials.financials;
+            return View(financialList);
         }
 
         //TO POPULATE DATA IN DATABASE!

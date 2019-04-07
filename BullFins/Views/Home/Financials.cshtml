@@ -4,39 +4,42 @@
 
 @model IEnumerable<BullFins.Models.EF_Models.Financials>
 
-
-
 <h2>Financial Data</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Report Date
-            </th>
-            <th>
-                Gross Profit
-            </th>
-            <th>
-                Total Revenue
-            </th>
-            <th>
-                Total Assets
-            </th>
-            <th>
-                Total Liabilities
-            </th>
-            <th>
-                Total Cash
-            </th>
-            <th>
-                Total Debt
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (Model == null)
+{
+    <p>Sorry, no Financial data exists for this company.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Report Date
+                </th>
+                <th>
+                    Gross Profit
+                </th>
+                <th>
+                    Total Revenue
+                </th>
+                <th>
+                    Total Assets
+                </th>
+                <th>
+                    Total Liabilities
+                </th>
+                <th>
+                    Total Cash
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (var item in Model)
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.reportdate)
@@ -56,10 +59,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.totalcash)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.totaldebt)
-                </td>
             </tr>
-        }
-    </tbody>
-</table>
+           }
+
+</tbody>
+    </table>
+
+}

@@ -46,6 +46,12 @@ namespace BullFins.Models
 
         }
 
+        public class SymbolFinancial
+        {
+            public string symbol { get; set; }
+            public List<Financials> financials { get; set; }
+        }
+
         public class Financials
         {
             [Key]
@@ -55,7 +61,7 @@ namespace BullFins.Models
             public decimal totalassets { get; set; }
             public decimal totalliabilities { get; set; }
             public decimal totalcash { get; set; }
-            public decimal totaldebt { get; set; }
+            //public decimal totaldebt { get; set; }
             public decimal cashflow { get; set; }
             
         }
