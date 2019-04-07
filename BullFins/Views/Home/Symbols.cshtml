@@ -4,45 +4,58 @@
 
 @model IEnumerable<BullFins.Models.EF_Models.Company>
 
-<h2>Symbols</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Symbol
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                Type
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.symbol)
-                </td>
-                <td>
-                    <a id="dbopt" asp-controller="Home" asp-action="ChartData" asp-route-symbol="@item.symbol">@Html.DisplayFor(modelItem => item.name)</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #ccccff 0%, #ffffff 100%);
+        }
+    </style>
+</head>
+<body>
 
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.type)
-                </td>
+    <h2>Symbols</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Symbol
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Type
+                </th>
             </tr>
-        }
-        @{
-            Model.Count();
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.symbol)
+                    </td>
+                    <td>
+                        <a id="dbopt" asp-controller="Home" asp-action="ChartData" asp-route-symbol="@item.symbol">@Html.DisplayFor(modelItem => item.name)</a>
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.type)
+                    </td>
+                </tr>
+            }
+            @{
+                Model.Count();
+            }
+        </tbody>
+    </table>
+</body>
+<html>
