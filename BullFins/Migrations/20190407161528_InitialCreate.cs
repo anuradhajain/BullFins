@@ -7,24 +7,6 @@ namespace BullFins.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Charts",
-                columns: table => new
-                {
-                    symbol = table.Column<string>(nullable: false),
-                    date = table.Column<string>(nullable: true),
-                    volume = table.Column<decimal>(nullable: false),
-                    open = table.Column<decimal>(nullable: false),
-                    high = table.Column<decimal>(nullable: false),
-                    low = table.Column<decimal>(nullable: false),
-                    close = table.Column<decimal>(nullable: false),
-                    change = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Charts", x => x.symbol);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Companies",
                 columns: table => new
                 {
@@ -100,9 +82,6 @@ namespace BullFins.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Charts");
-
             migrationBuilder.DropTable(
                 name: "Companies");
 
