@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using static BullFins.Models.EF_Models;
+using BullFins.Models;
 // ADD THESE DIRECTIVES
 using BullFins.DataAccess;
 using Newtonsoft.Json;
@@ -81,9 +82,14 @@ namespace BullFins.Controllers
             string responseStockStats = "";
             StockStats stockStats = null;
 
+            HttpClient httpClient1 = new HttpClient();
+            httpClient1.DefaultRequestHeaders.Accept.Clear();
+            httpClient1.DefaultRequestHeaders.Accept.Add(new
+                System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
             // connect to the IEXTrading API and retrieve information
-            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
-            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+            httpClient1.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient1.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
 
             // read the Json objects in the API response
             if (response.IsSuccessStatusCode)
@@ -204,14 +210,20 @@ namespace BullFins.Controllers
             return View(new List<StockStats>{stockstats});
         }
 
-        public IActionResult ChartData(String symbol)
+        public IActionResult SymbolDetails(String symbol)
+        {
+            ViewBag.symbol = symbol;
+            return View();
+        }
+
+       /* public IActionResult ChartData(String symbol)
         {
             //Set ViewBag variable first
             ViewBag.symbol = symbol;
             List<Chart> chartData = GetChartData(symbol);
 
             return View(chartData);
-        }
+        }*/
 
 
         public IActionResult Financials(String symbol)
@@ -251,6 +263,29 @@ namespace BullFins.Controllers
             ViewBag.dbSuccessComp = 1;
             return View("Index", companies);
         }
+
+        public IActionResult ChartData(String symbol)
+        {
+            List<Chart> chartData = GetChartData(symbol);
+            var ci = System.Globalization.CultureInfo.GetCultureInfo("en-us");
+
+            List<DataPoint> dataPoints = new List<DataPoint>();
+            foreach (Chart chart in chartData) {
+                DateTime yourDateTime = DateTime.Parse(chart.date, ci);
+                long yourDateTimeMilliseconds = new DateTimeOffset(yourDateTime).ToUnixTimeMilliseconds();
+                DataPoint dp = new DataPoint(yourDateTimeMilliseconds, chart.high);
+                dataPoints.Add(dp);
+            }
+
+            StockStats stockstats = GetStockStats(symbol);
+
+            ViewBag.symbol = symbol;
+            ViewBag.StockStat = new List<StockStats> { stockstats };          
+            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+
+            return View();
+        }
+
 
         public IActionResult Privacy()
         {

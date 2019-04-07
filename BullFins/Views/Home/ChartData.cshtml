@@ -1,63 +1,99 @@
-﻿@{
+﻿@using static BullFins.Models.EF_Models;
+@{
     ViewData["Title"] = "Chart Data";
 }
 
 @model IEnumerable<BullFins.Models.EF_Models.Chart>
 
-<h2>Chart Data for @ViewBag.symbol</h2>
+<h2>Stock Data for @ViewBag.symbol</h2>
+<br/>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                Date
+                Symbol
             </th>
             <th>
-                Volume
+                Dividend Rate
             </th>
             <th>
-                Open
+                Revenue
             </th>
             <th>
-                High
+                Gross Profit
             </th>
             <th>
-                Low
+                Cash
             </th>
             <th>
-                Close
+                Debt
             </th>
             <th>
-                Change
+                Revenue Per Share
+            </th>
+            <th>
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (StockStats item in ViewBag.StockStat)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.volume)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.open)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.high)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.low)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.close)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.change)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.symbol)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dividendRate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.revenue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.grossProfit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.cash)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.debt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.revenuePerShare)
+                </td>
+                <td>
+                    <a id="dbopt" asp-controller="Home" asp-action="Financials" asp-route-symbol="@ViewBag.symbol">Get Financial Info</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+
+
+<div id="chartContainer"></div>
+
+
+<script type="text/javascript">
+
+	function test() {
+		var chart = new CanvasJS.Chart("chartContainer", {
+			theme: "light2",
+			animationEnabled: true,
+			title: {
+				text: "Stock Price/YTD"
+			},
+			subtitles: [
+				{ text: "Hover to get stock info of specific date" }
+			],
+			data: [{
+                    type: "area",
+                    xValueType: "dateTime",
+				    dataPoints: @Html.Raw(ViewBag.DataPoints)
+			}]
+		});
+		chart.render();
+    };
+    test();
+</script>

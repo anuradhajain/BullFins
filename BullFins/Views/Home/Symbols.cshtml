@@ -29,7 +29,7 @@
         {
             <tr>
                 <td>
-                    <a id="dbopt" asp-controller="Home" asp-action="Financials" asp-route-symbol="@item.symbol">@Html.DisplayFor(modelItem => item.symbol)</a>
+                    @Html.DisplayFor(modelItem => item.symbol)
                 </td>
                 <td>
                     <a id="dbopt" asp-controller="Home" asp-action="ChartData" asp-route-symbol="@item.symbol">@Html.DisplayFor(modelItem => item.name)</a>
