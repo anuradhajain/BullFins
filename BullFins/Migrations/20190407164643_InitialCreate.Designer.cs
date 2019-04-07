@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BullFins.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190407161528_InitialCreate")]
+    [Migration("20190407164643_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
