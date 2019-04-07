@@ -64,7 +64,7 @@ namespace BullFins.Controllers
             if (!companyList.Equals(""))
             {
                 // https://stackoverflow.com/a/46280739
-                companies = companies.JsonConvert.DeserializeObject<List<Company>>(companyList);
+                companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
                 companies = companies.GetRange(0, 50);
             }
 
