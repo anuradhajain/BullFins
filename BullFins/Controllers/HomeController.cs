@@ -64,7 +64,7 @@ namespace BullFins.Controllers
             if (!companyList.Equals(""))
             {
                 // https://stackoverflow.com/a/46280739
-                companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
+                companies = companies.JsonConvert.DeserializeObject<List<Company>>(companyList);
                 companies = companies.GetRange(0, 50);
             }
 
@@ -130,19 +130,19 @@ namespace BullFins.Controllers
 
         /*
            Calls the IEX reference API to get the financials stats.
-           Returns a stock stats whose information is available. 
+           Returns Financials of the companies whose information is available. 
        */
         public Financials GetFinancials(String symbol)
         {
-            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "financials";
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/financials";
             string responseFinancials = "";
             Financials financials = null;
 
-            // connect to the IEXTrading API and retrieve information
+            // connect to the IEXTrading Financial API and retrieve information
             httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
             HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
 
-            // read the Json objects in the API response
+            // read the Json objects in the Financial API response
             if (response.IsSuccessStatusCode)
             {
                 responseFinancials = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -152,10 +152,11 @@ namespace BullFins.Controllers
             // now, parse the Json strings as C# objects
             if (!responseFinancials.Equals(""))
             {
+                //chartData = JsonConvert.DeserializeObject<List<Chart>>(responseChartData);
                 financials = JsonConvert.DeserializeObject<Financials>(responseFinancials);
             }
 
-            return financials;
+            return (financials);      
         }
 
 
@@ -206,6 +207,22 @@ namespace BullFins.Controllers
 
             return View(chartData);
         }
+
+
+        public IActionResult Financials(String symbol)
+        {
+
+            //Set ViewBag variable first
+            ViewBag.dbSuccessComp = 0;
+            Financials financials = GetFinancials(symbol);
+
+            //Save Financial in TempData, so they do not have to be retrieved again
+            TempData["financials"] = JsonConvert.SerializeObject(financials);
+
+            return View(financials);
+        }
+
+        //TO POPULATE DATA IN DATABASE!
 
         /*
             Save the available symbols in the database
