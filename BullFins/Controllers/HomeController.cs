@@ -201,7 +201,7 @@ namespace BullFins.Controllers
         public IActionResult ChartData(String symbol)
         {
             //Set ViewBag variable first
-            ViewBag.dbSuccessComp = 0;
+            ViewBag.symbol = symbol;
             List<Chart> chartData = GetChartData(symbol);
 
             return View(chartData);
