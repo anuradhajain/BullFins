@@ -48,6 +48,7 @@ namespace BullFins.Models
 
         public class SymbolFinancial
         {
+            [Key]
             public string symbol { get; set; }
             public List<Financials> financials { get; set; }
         }

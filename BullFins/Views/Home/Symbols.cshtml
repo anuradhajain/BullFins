@@ -22,9 +22,7 @@
             </th>
         </tr>
     </thead>
-
     <tbody>
-
         @foreach (var item in Model)
         {
             <tr>
@@ -43,14 +41,8 @@
                 </td>
             </tr>
         }
-
         @{
             Model.Count();
         }
     </tbody>
 </table>
-<tr>
-    <td>
-        <a id="dbopt" asp-controller="Home" asp-action="PopulateSymbols"><img src="~/img/button_save-data.png" /></a>
-    </td>
-</tr>

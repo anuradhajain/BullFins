@@ -174,15 +174,7 @@ namespace BullFins.Controllers
 
         public IActionResult Index()
         {
-
-            //Set ViewBag variable first
-            ViewBag.dbSuccessComp = 0;
-            List<Company> companies = GetSymbols();
-
-            //Save companies in TempData, so they do not have to be retrieved again
-            TempData["Companies"] = JsonConvert.SerializeObject(companies);
-
-            return View(companies);
+            return View();
         }
 
         /*
@@ -191,93 +183,39 @@ namespace BullFins.Controllers
         */
         public IActionResult Symbols()
         {
-            //Set ViewBag variable first
-            ViewBag.dbSuccessComp = 0;
             List<Company> companies = GetSymbols();
-
-            //Save companies in TempData, so they do not have to be retrieved again
-            TempData["Companies"] = JsonConvert.SerializeObject(companies);
-
+            PopulateSymbols(companies);
             return View(companies);
         }
 
-        public IActionResult StockStats(String symbol)
-        {
-            //Set ViewBag variable first
-            ViewBag.dbSuccessComp = 0;
-            StockStats stockstats = GetStockStats(symbol);
-
-            return View(new List<StockStats>{stockstats});
-        }
-
-        public IActionResult SymbolDetails(String symbol)
-        {
-            ViewBag.symbol = symbol;
-            return View();
-        }
-
-       /* public IActionResult ChartData(String symbol)
-        {
-            //Set ViewBag variable first
-            ViewBag.symbol = symbol;
-            List<Chart> chartData = GetChartData(symbol);
-
-            return View(chartData);
-        }*/
-
-
         public IActionResult Financials(String symbol)
         {
-
-            //Set ViewBag variable first
-            ViewBag.dbSuccessComp = 0;
             SymbolFinancial financials = GetFinancials(symbol);
+            PopulateSymbolFinancialData(financials);
 
-            //Save Financial in TempData, so they do not have to be retrieved again
-            //TempData["financials"] = JsonConvert.SerializeObject(financials);
             List<Financials> financialList = financials.financials;
             return View(financialList);
         }
 
-        //TO POPULATE DATA IN DATABASE!
-
-        /*
-            Save the available symbols in the database
-        */
-        public IActionResult PopulateSymbols()
-        {
-            // Retrieve the companies that were saved in the symbols method
-            List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(TempData["Companies"].ToString());
-
-            foreach (Company company in companies)
-            {
-                //Database will give PK constraint violation error when trying to insert record with existing PK.
-                //So add company only if it doesnt exist, check existence using symbol (PK)
-                if (dbContext.Companies.Where(c => c.symbol.Equals(company.symbol)).Count() == 0)
-                {
-                    dbContext.Companies.Add(company);
-                }
-            }
-
-            dbContext.SaveChanges();
-            ViewBag.dbSuccessComp = 1;
-            return View("Index", companies);
-        }
-
         public IActionResult ChartData(String symbol)
         {
-            List<Chart> chartData = GetChartData(symbol);
-            var ci = System.Globalization.CultureInfo.GetCultureInfo("en-us");
+            StockStats stockstats = GetStockStats(symbol);
+            PopulateStockStats(stockstats);
 
+            List<Chart> chartData = GetChartData(symbol);
+            /*foreach (Chart chart in chartData) {
+                chart.symbol = symbol;
+            }*/
+            PopulateSymbolChart(chartData);
+
+            var ci = System.Globalization.CultureInfo.GetCultureInfo("en-us");
             List<DataPoint> dataPoints = new List<DataPoint>();
             foreach (Chart chart in chartData) {
                 DateTime yourDateTime = DateTime.Parse(chart.date, ci);
                 long yourDateTimeMilliseconds = new DateTimeOffset(yourDateTime).ToUnixTimeMilliseconds();
                 DataPoint dp = new DataPoint(yourDateTimeMilliseconds, chart.high);
                 dataPoints.Add(dp);
-            }
-
-            StockStats stockstats = GetStockStats(symbol);
+            }          
 
             ViewBag.symbol = symbol;
             ViewBag.StockStat = new List<StockStats> { stockstats };          
@@ -300,6 +238,71 @@ namespace BullFins.Controllers
         public IActionResult StockGuide()
         {
             return View();
+        }
+
+        /*
+            Save the available symbols in the database
+        */
+        public void PopulateSymbols(List<Company> companies)
+        {
+            // Retrieve the companies that were saved in the symbols method
+           // List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(TempData["Companies"].ToString());
+
+            foreach (Company company in companies)
+            {
+                //Database will give PK constraint violation error when trying to insert record with existing PK.
+                //So add company only if it doesnt exist, check existence using symbol (PK)
+                if (dbContext.Companies.Where(c => c.symbol.Equals(company.symbol)).Count() == 0)
+                {
+                    dbContext.Companies.Add(company);
+                }
+            }
+            dbContext.SaveChanges();
+        }
+
+        /*
+            Save the symboll statistic in the database
+        */
+        public void PopulateStockStats(StockStats stock)
+        {
+            //Database will give PK constraint violation error when trying to insert record with existing PK.
+            //So add company only if it doesnt exist, check existence using symbol (PK)
+            if (dbContext.StockStatistics.Where(c => c.symbol.Equals(stock.symbol)).Count() == 0)
+            {
+                dbContext.StockStatistics.Add(stock);
+            }        
+            dbContext.SaveChanges();
+        }
+
+        /*
+            Save the symboll chart data in the database
+        */
+        public void PopulateSymbolChart(List<Chart> chartData)
+        {
+            foreach (Chart chart in chartData)
+            {
+                //Database will give PK constraint violation error when trying to insert record with existing PK.
+                //So add company only if it doesnt exist, check existence using symbol (PK)
+                if (dbContext.Charts.Where(c => c.symbol.Equals(chart.symbol)).Count() == 0)
+                {
+                    dbContext.Charts.Add(chart);
+                }
+            }
+            dbContext.SaveChanges();
+        }
+
+        /*
+            Save the symboll chart data in the database
+        */
+        public void PopulateSymbolFinancialData(SymbolFinancial symbolFinancial)
+        {
+            //Database will give PK constraint violation error when trying to insert record with existing PK.
+            //So add company only if it doesnt exist, check existence using symbol (PK)
+            if (dbContext.SymbolFinancials.Where(c => c.symbol.Equals(symbolFinancial.symbol)).Count() == 0)
+            {
+                dbContext.SymbolFinancials.Add(symbolFinancial);
+            }           
+            dbContext.SaveChanges();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
