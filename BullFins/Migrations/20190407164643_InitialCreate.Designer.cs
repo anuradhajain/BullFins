@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BullFins.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190407144316_InitialCreate")]
+    [Migration("20190407164643_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,30 +19,6 @@ namespace BullFins.Migrations
                 .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("BullFins.Models.EF_Models+Chart", b =>
-                {
-                    b.Property<string>("symbol")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("change");
-
-                    b.Property<decimal>("close");
-
-                    b.Property<string>("date");
-
-                    b.Property<decimal>("high");
-
-                    b.Property<decimal>("low");
-
-                    b.Property<decimal>("open");
-
-                    b.Property<decimal>("volume");
-
-                    b.HasKey("symbol");
-
-                    b.ToTable("Charts");
-                });
 
             modelBuilder.Entity("BullFins.Models.EF_Models+Company", b =>
                 {

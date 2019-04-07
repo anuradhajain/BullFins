@@ -18,30 +18,6 @@ namespace BullFins.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BullFins.Models.EF_Models+Chart", b =>
-                {
-                    b.Property<string>("symbol")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("change");
-
-                    b.Property<decimal>("close");
-
-                    b.Property<string>("date");
-
-                    b.Property<decimal>("high");
-
-                    b.Property<decimal>("low");
-
-                    b.Property<decimal>("open");
-
-                    b.Property<decimal>("volume");
-
-                    b.HasKey("symbol");
-
-                    b.ToTable("Charts");
-                });
-
             modelBuilder.Entity("BullFins.Models.EF_Models+Company", b =>
                 {
                     b.Property<string>("symbol")
