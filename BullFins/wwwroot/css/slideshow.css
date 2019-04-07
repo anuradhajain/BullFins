@@ -1,5 +1,8 @@
-﻿* {
-    box-sizing: border-box
+﻿
+*{box-sizing: border-box}
+body {font-family: Verdana, sans-serif; margin:0}
+.mySlides {display: normal}
+img {vertical-align: middle;}
 }
 
 /* Slideshow container */
@@ -11,7 +14,7 @@
 
 /* Hide the images by default */
 .mySlides {
-    display: none;
+    display:none;
 }
 
 /* Next & previous buttons */
@@ -80,7 +83,7 @@
 /* Fading animation */
 .fade {
     -webkit-animation-name: fade;
-    -webkit-animation-duration: 1.5s;
+    -webkit-animation-duration: 15s;
     animation-name: fade;
     animation-duration: 1.5s;
 }
@@ -91,7 +94,7 @@
     }
 
     to {
-        opacity: 1
+        opacity: 0.6
     }
 }
 
@@ -101,6 +104,6 @@
     }
 
     to {
-        opacity: 1
+        opacity: 0.6
     }
 }
