@@ -17,3 +17,10 @@ namespace BullFins.DataAccess
         public DbSet<SymbolFinancial> SymbolFinancials { get; set; }
     }
 }
+
+
+
+
+
+
+
